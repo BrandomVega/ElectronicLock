@@ -1,0 +1,2484 @@
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[205]: Found directive in column 1. (__CONFIG)
+2007   3F71           00001 __CONFIG 0X3F71
+                      00002 #INCLUDE <p16f877a.inc>
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ;  MPASM PIC16F877A processor include
+                      00005 ; 
+                      00006 ;  (c) Copyright 1999-2013 Microchip Technology, All rights reserved
+                      00007 ;==========================================================================
+                      00008 
+                      00566         LIST
+Warning[205]: Found directive in column 1. (List)
+                      00003 List p=16f877a
+                      00004 
+Warning[205]: Found directive in column 1. (ORG)
+0000                  00005 ORG 0 
+                      00006 
+                      00007 #DEFINE RS PORTC,4
+                      00008 #DEFINE EN PORTC,5
+  00000045            00009 UNO_SET EQU 0X45
+  00000046            00010 DOS_SET EQU 0X46
+  000000FC            00011 TMR_CARGA EQU .252
+                      00012 ;VALORES DE DIGITOS
+  00000050            00013 DIG1 EQU 0X50
+  00000051            00014 DIG2 EQU 0X51
+  00000052            00015 DIG3 EQU 0X52
+  00000053            00016 DIG4 EQU 0X53
+  00000054            00017 DIG5 EQU 0X54
+  00000055            00018 DIG6 EQU 0X55
+  00000056            00019 DIG7 EQU 0X56
+  00000057            00020 DIG8 EQU 0X57
+  00000058            00021 DIG9 EQU 0X58
+  00000059            00022 DIG0 EQU 0X59
+  0000005A            00023 DIGGATO EQU 0X5A
+                      00024 
+  0000005C            00025 CONTADOR EQU 0X5C
+  0000005D            00026 CONTADORLIMITE EQU 0X5D
+  0000005E            00027 COMPARADORLIMITE EQU 0X5E
+  0000005F            00028 MODOPASSWORD EQU 0X5F
+  00000060            00029 DIG1TEST EQU 0X60
+  00000061            00030 DIG2TEST EQU 0X61
+  00000062            00031 DIG3TEST EQU 0X62
+  00000063            00032 DIG4TEST EQU 0X63
+                      00033 
+  00000064            00034 ABRIROADMIN EQU 0X64
+  00000065            00035 IDENTIFICADOR EQU 0X65
+  00000066            00036 STATE EQU 0X66
+                      00037 
+Warning[203]: Found opcode in column 1. (BSF)
+0000   1683           00038 BSF STATUS,5
+Warning[203]: Found opcode in column 1. (CLRF)
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0001   0187           00039 CLRF TRISC
+Warning[203]: Found opcode in column 1. (MOVLW)
+0002   30F0           00040 MOVLW B'11110000'
+Warning[203]: Found opcode in column 1. (MOVWF)
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0003   0086           00041 MOVWF TRISB
+Warning[203]: Found opcode in column 1. (MOVLW)
+0004   3007           00042 MOVLW B'00000111'
+Warning[203]: Found opcode in column 1. (MOVWF)
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0005   0081           00043 MOVWF OPTION_REG
+Warning[203]: Found opcode in column 1. (BCF)
+0006   1283           00044 BCF STATUS,5
+Warning[203]: Found opcode in column 1. (BCF)
+0007   1003           00045 BCF STATUS,0
+Warning[203]: Found opcode in column 1. (CLRF)
+0008   01D0           00046 CLRF DIG1
+                      00047 
+                      00048 
+0009                  00049 REINICIO
+                      00050 
+                      00051 
+Warning[203]: Found opcode in column 1. (CLRF)
+0009   0187           00052 CLRF PORTC
+Warning[203]: Found opcode in column 1. (CALL)
+000A   23EB           00053 CALL INIT
+Warning[203]: Found opcode in column 1. (CALL)
+000B   24C8           00054 CALL LIMPIEZA
+Warning[203]: Found opcode in column 1. (CLRF)
+000C   0187           00055 CLRF PORTC
+Warning[203]: Found opcode in column 1. (CALL)
+000D   2399           00056 CALL HOLASET1
+Warning[203]: Found opcode in column 1. (CALL)
+000E   23A3           00057 CALL BIENVENIDOSET1
+Warning[203]: Found opcode in column 1. (CLRF)
+000F   01C5           00058 CLRF UNO_SET
+Warning[203]: Found opcode in column 1. (CLRF)
+0010   01C6           00059 CLRF DOS_SET
+Warning[203]: Found opcode in column 1. (CLRF)
+0011   01DF           00060 CLRF MODOPASSWORD
+Warning[203]: Found opcode in column 1. (CLRF)
+0012   01E4           00061 CLRF ABRIROADMIN
+0013   01DD           00062         CLRF CONTADORLIMITE
+0014   01DE           00063         CLRF COMPARADORLIMITE
+                      00064         ;PERMITO EL CURSOR
+0015   3000           00065         MOVLW B'00000' ;ASIGNO LA POSICION DE ESCRITURA
+0016   0087           00066         MOVWF PORTC
+0017   24DB           00067         CALL DELAY
+0018   24C2           00068         CALL EJECUTA
+0019   300C           00069         MOVLW B'01100' 
+001A   0087           00070         MOVWF PORTC
+001B   24DB           00071         CALL DELAY
+001C   24C2           00072         CALL EJECUTA
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00073 ;--------------MENSAJE INICIAL MOVIEMIENTO----------
+001D                  00074 INICIO 
+001D   300E           00075         MOVLW .14
+001E   00C0           00076         MOVWF 0X40
+001F                  00077 SEGURO
+001F   0BC0           00078         DECFSZ 0X40,1
+0020   282E           00079         GOTO ROTACION
+0021   1403           00080         BSF STATUS,0
+0022                  00081 ENTRA
+0022   300D           00082         MOVLW B'01101' ;ESCONDO EL POSIBLE MENSAJE
+0023   0087           00083         MOVWF PORTC
+0024   24DB           00084         CALL DELAY
+0025   24C2           00085         CALL EJECUTA
+0026   3005           00086         MOVLW B'00101'
+0027   0087           00087         MOVWF PORTC
+0028   24DB           00088         CALL DELAY
+0029   24C2           00089         CALL EJECUTA
+                      00090         ;ESPERO LAS RESPUESTA
+002A   2229           00091         CALL TECLADO
+002B   1C03           00092         BTFSS STATUS,0 ;ES 1?
+002C   2831           00093         GOTO CONTINUAR ;NO
+002D   2822           00094         GOTO ENTRA      ;SI
+002E                  00095 ROTACION
+002E   2387           00096         CALL MENSAJE
+002F   24E1           00097         CALL TIEMPO
+Warning[203]: Found opcode in column 1. (GOTO)
+0030   281F           00098 GOTO SEGURO
+                      00099 ;----PARTE 2------
+0031                  00100 CONTINUAR       ;LLAMADA DE LINEAS
+0031   01C5           00101         CLRF UNO_SET
+0032   01C6           00102         CLRF DOS_SET
+0033   24C8           00103         CALL LIMPIEZA
+0034   23AD           00104         CALL LINEAUNO
+0035   300C           00105         MOVLW B'01100' ;ASIGNO LA SEGUNDA LINEA
+0036   0087           00106         MOVWF PORTC
+0037   24DB           00107         CALL DELAY
+0038   24C2           00108         CALL EJECUTA
+0039   3000           00109         MOVLW B'00000' 
+003A   0087           00110         MOVWF PORTC
+003B   24DB           00111         CALL DELAY
+003C   24C2           00112         CALL EJECUTA
+003D   23C3           00113         CALL LINEADOS
+003E   01C5           00114         CLRF UNO_SET
+003F   24E1           00115         CALL TIEMPO
+0040   1003           00116         BCF STATUS,0
+                      00117         ;ESCONDO EL NUMERO RESPUESTA    
+0041   300D           00118         MOVLW B'01101' ;ASIGNO LA SEGUNDA LINEA
+0042   0087           00119         MOVWF PORTC
+0043   24DB           00120         CALL DELAY
+0044   24C2           00121         CALL EJECUTA
+0045   3000           00122         MOVLW B'00000' 
+0046   0087           00123         MOVWF PORTC
+0047   24DB           00124         CALL DELAY
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0048   24C2           00125         CALL EJECUTA
+0049                  00126 CONTRASEÑA      ;ESPERA LA RESPUESTA 1> O 2>
+0049   2229           00127         CALL TECLADO
+004A   0845           00128         MOVFW UNO_SET
+004B   3A14           00129         XORLW .20
+004C   1903           00130         BTFSC STATUS,2;
+004D   2853           00131         GOTO ABRIR
+                      00132         
+004E   0846           00133         MOVFW DOS_SET
+004F   3A15           00134         XORLW .21
+0050   1903           00135         BTFSC STATUS,2
+0051   295A           00136         GOTO MENU
+Warning[203]: Found opcode in column 1. (GOTO)
+0052   2849           00137 GOTO CONTRASEÑA
+                      00138 ;----OPEN DOOR------
+0053                  00139 ABRIR
+0053   24C8           00140         CALL LIMPIEZA
+0054   3008           00141         MOVLW B'01000' ;ASIGNO LA POSICION
+0055   0087           00142         MOVWF PORTC
+0056   24DB           00143         CALL DELAY
+0057   24C2           00144         CALL EJECUTA
+0058   3004           00145         MOVLW B'00100' 
+0059   0087           00146         MOVWF PORTC
+005A   24DB           00147         CALL DELAY
+005B   24C2           00148         CALL EJECUTA
+                      00149         ;password
+005C   2390           00150         CALL PASSWORD
+005D   300C           00151         MOVLW B'01100' ;ASIGNO LA POSICION DE ESCRITURA
+005E   0087           00152         MOVWF PORTC
+005F   24DB           00153         CALL DELAY
+0060   24C2           00154         CALL EJECUTA
+0061   3005           00155         MOVLW B'00101' 
+0062   0087           00156         MOVWF PORTC
+0063   24DB           00157         CALL DELAY
+0064   24C2           00158         CALL EJECUTA
+                      00159         ;PERMITO EL CURSOR
+0065   3000           00160         MOVLW B'00000' ;ASIGNO LA POSICION DE ESCRITURA
+0066   0087           00161         MOVWF PORTC
+0067   24DB           00162         CALL DELAY
+0068   24C2           00163         CALL EJECUTA
+0069   300F           00164         MOVLW B'01111' 
+006A   0087           00165         MOVWF PORTC
+006B   24DB           00166         CALL DELAY
+006C   24C2           00167         CALL EJECUTA
+                      00168         ;LIMPIO LO QUE SE USARÁ PARA EVITAR ERRORES
+006D   1103           00169         BCF STATUS,2
+006E   01D9           00170         CLRF DIG0
+006F   01D0           00171         CLRF DIG1
+0070   01D1           00172         CLRF DIG2
+0071   01D2           00173         CLRF DIG3
+0072   01D3           00174         CLRF DIG4
+0073   01D4           00175         CLRF DIG5
+0074   01D5           00176         CLRF DIG6
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0075   01DC           00177         CLRF CONTADOR
+0076   01DD           00178         CLRF CONTADORLIMITE
+0077   01DE           00179         CLRF COMPARADORLIMITE
+0078   1103           00180         BCF STATUS,2
+                      00181 
+                      00182 
+0079   30FF           00183         MOVLW 0XFF ;0X00 PARA NUMEROS 0XFF PARA PASSWORD
+007A   00DF           00184         MOVWF MODOPASSWORD
+007B   0187           00185         CLRF PORTC
+007C   2146           00186         CALL LIMPIADIGITOS
+007D   01E5           00187         CLRF IDENTIFICADOR
+007E                  00188 TESTD1 ;HORA  DE VERIFICAR LOS DATOS GUARDADOS LA CONTRASEÑA SERÁ .23 , .24, .25, .26
+007E   20B6           00189         CALL LEEDIG1TEST
+007F   2146           00190         CALL LIMPIADIGITOS
+0080   01E5           00191         CLRF IDENTIFICADOR
+0081   20ED           00192         CALL CONFIRMA   
+0082   2229           00193         CALL TECLADO    
+0083   2114           00194         CALL EXTRAE
+0084   0865           00195         MOVFW IDENTIFICADOR ;COMPARA QUE EL BIT SEA EL CORRECTO
+Message[305]: Using default destination of 1 (file).
+0085   06E0           00196         XORWF DIG1TEST
+0086   1D03           00197         BTFSS STATUS,2 ;EL BIT ES 0? (DIFERENTES?)
+0087   287E           00198         GOTO TESTD1 ;SI NO ES NI EL PRIMERO LA CONTRASEÑA ES INCORRECTA(PERO NO SE MOSTRARA)
+0088   1103           00199         BCF STATUS,2
+0089   2146           00200         CALL LIMPIADIGITOS
+008A   01E5           00201         CLRF IDENTIFICADOR
+008B                  00202 TESTD2
+008B   20C2           00203         CALL LEEDIG2TEST
+008C   2146           00204         CALL LIMPIADIGITOS
+008D   01E5           00205         CLRF IDENTIFICADOR
+008E   20ED           00206         CALL CONFIRMA
+008F   2229           00207         CALL TECLADO
+0090   2114           00208         CALL EXTRAE ;EXTRAE EL NUMERO DEL TECLADO QUE SE PRESIONO
+0091   0865           00209         MOVFW IDENTIFICADOR ;MUEVE EL NUMERO AL IDENTIFICADOR
+Message[305]: Using default destination of 1 (file).
+0092   06E1           00210         XORWF DIG2TEST ;LEE EL VALOR DE DIG2TEST
+0093   1D03           00211         BTFSS STATUS,2
+0094   288B           00212         GOTO TESTD2
+0095   1103           00213         BCF STATUS,2
+0096   2146           00214         CALL LIMPIADIGITOS
+0097   01E5           00215         CLRF IDENTIFICADOR
+0098                  00216 TESTD3
+0098   20CE           00217         CALL LEEDIG3TEST
+0099   2146           00218         CALL LIMPIADIGITOS
+009A   01E5           00219         CLRF IDENTIFICADOR
+009B   20ED           00220         CALL CONFIRMA
+009C   2229           00221         CALL TECLADO
+009D   2114           00222         CALL EXTRAE
+009E   0865           00223         MOVFW IDENTIFICADOR
+Message[305]: Using default destination of 1 (file).
+009F   06E2           00224         XORWF DIG3TEST
+00A0   1D03           00225         BTFSS STATUS,2
+00A1   2898           00226         GOTO TESTD3 ;NO
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00A2   1103           00227         BCF STATUS,2
+00A3   2146           00228         CALL LIMPIADIGITOS
+00A4   01E5           00229         CLRF IDENTIFICADOR
+00A5                  00230 TESTD4
+00A5   20DA           00231         CALL LEEDIG4TEST
+00A6   2146           00232         CALL LIMPIADIGITOS
+00A7   01E5           00233         CLRF IDENTIFICADOR
+00A8   20ED           00234         CALL CONFIRMA
+00A9   2229           00235         CALL TECLADO
+00AA   2114           00236         CALL EXTRAE
+00AB   0865           00237         MOVFW IDENTIFICADOR
+Message[305]: Using default destination of 1 (file).
+00AC   06E3           00238         XORWF DIG4TEST
+00AD   1D03           00239         BTFSS STATUS,2
+00AE   28A5           00240         GOTO TESTD4 ;NO
+00AF   2146           00241         CALL LIMPIADIGITOS
+00B0   01E5           00242         CLRF IDENTIFICADOR
+                      00243 ;-----------
+00B1   0864           00244         MOVFW ABRIROADMIN
+00B2   3A10           00245         XORLW 0X10
+00B3   1D03           00246         BTFSS STATUS,2
+00B4   2921           00247         GOTO CORRECTA ;CORRECTA SE HABRE
+00B5   295F           00248         GOTO CAMBIARCONTRA
+                      00249 ;------------LECTURA DE EEPROM--------
+00B6                  00250 LEEDIG1TEST
+00B6   1703           00251         BSF STATUS,RP1 
+00B7   1283           00252         BCF STATUS,RP0 
+00B8   3001           00253         MOVLW 0X01
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00B9   008D           00254         MOVWF EEADR 
+00BA   1683           00255         BSF STATUS,RP0 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00BB   138C           00256         BCF EECON1,EEPGD 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00BC   140C           00257         BSF EECON1,RD 
+00BD   1283           00258         BCF STATUS,RP0 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00BE   080C           00259         MOVF EEDATA,W 
+00BF   1303           00260         BCF STATUS, RP1
+00C0   00E0           00261         MOVWF DIG1TEST
+Warning[203]: Found opcode in column 1. (RETURN)
+00C1   0008           00262 RETURN
+                      00263         
+00C2                  00264 LEEDIG2TEST
+00C2   1703           00265         BSF STATUS,RP1 
+00C3   1283           00266         BCF STATUS,RP0 
+00C4   3002           00267         MOVLW 0X02
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00C5   008D           00268         MOVWF EEADR 
+00C6   1683           00269         BSF STATUS,RP0 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00C7   138C           00270         BCF EECON1,EEPGD 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00C8   140C           00271         BSF EECON1,RD 
+00C9   1283           00272         BCF STATUS,RP0 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00CA   080C           00273         MOVF EEDATA,W 
+00CB   1303           00274         BCF STATUS, RP1
+00CC   00E1           00275         MOVWF DIG2TEST
+Warning[203]: Found opcode in column 1. (RETURN)
+00CD   0008           00276 RETURN
+00CE                  00277 LEEDIG3TEST
+00CE   1703           00278         BSF STATUS,RP1 
+00CF   1283           00279         BCF STATUS,RP0 
+00D0   3003           00280         MOVLW 0X03
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00D1   008D           00281         MOVWF EEADR 
+00D2   1683           00282         BSF STATUS,RP0 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00D3   138C           00283         BCF EECON1,EEPGD 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00D4   140C           00284         BSF EECON1,RD 
+00D5   1283           00285         BCF STATUS,RP0 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00D6   080C           00286         MOVF EEDATA,W 
+00D7   1303           00287         BCF STATUS, RP1
+00D8   00E2           00288         MOVWF DIG3TEST
+Warning[203]: Found opcode in column 1. (RETURN)
+00D9   0008           00289 RETURN
+00DA                  00290 LEEDIG4TEST
+00DA   1703           00291         BSF STATUS,RP1 
+00DB   1283           00292         BCF STATUS,RP0 
+00DC   3004           00293         MOVLW 0X04
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00DD   008D           00294         MOVWF EEADR 
+00DE   1683           00295         BSF STATUS,RP0 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00DF   138C           00296         BCF EECON1,EEPGD 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00E0   140C           00297         BSF EECON1,RD 
+00E1   1283           00298         BCF STATUS,RP0 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00E2   080C           00299         MOVF EEDATA,W 
+00E3   1303           00300         BCF STATUS, RP1
+00E4   00E3           00301         MOVWF DIG4TEST
+Warning[203]: Found opcode in column 1. (RETURN)
+00E5   0008           00302 RETURN
+                      00303 
+                      00304 
+                      00305 
+                      00306 ;CUENTA LOS DIGITOS QUE SE HAN INGRESADO
+00E6                  00307 CUENTADIGITOS
+00E6   1103           00308         BCF STATUS,2
+00E7   085D           00309         MOVFW CONTADORLIMITE
+00E8   3A03           00310         XORLW 0x03
+00E9   1903           00311         BTFSC STATUS,2 ;IGUALES? = 1 DIFERENTES? = 0 ---ES CERO?
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00EA   0ADE           00312         INCF COMPARADORLIMITE,1 ;NO
+00EB   0ADD           00313         INCF CONTADORLIMITE,1 ;SI
+Warning[203]: Found opcode in column 1. (RETURN)
+00EC   0008           00314 RETURN
+                      00315 
+00ED                  00316 CONFIRMA
+00ED   085E           00317         MOVFW COMPARADORLIMITE
+00EE   3A01           00318         XORLW 0X01
+00EF   1903           00319         BTFSC STATUS,2 ;IGUALES? = 1 DIFERENTES? = 0 ---ES CERO?
+00F0   28F2           00320         GOTO CONTRAINCORRECTA
+Warning[203]: Found opcode in column 1. (RETURN)
+00F1   0008           00321 RETURN
+                      00322 
+00F2                  00323 CONTRAINCORRECTA
+00F2   3000           00324         MOVLW B'00000' ;DESACTIVO EL CURSOR
+00F3   0087           00325         MOVWF PORTC
+00F4   24DB           00326         CALL DELAY
+00F5   24C2           00327         CALL EJECUTA
+00F6   300C           00328         MOVLW B'01100' 
+00F7   0087           00329         MOVWF PORTC
+00F8   24DB           00330         CALL DELAY
+00F9   24C2           00331         CALL EJECUTA
+                      00332 
+00FA   24C8           00333         CALL LIMPIEZA
+                      00334 
+00FB   3008           00335         MOVLW B'01000' ;ASIGNO LA PRIMERA LINEA
+00FC   0087           00336         MOVWF PORTC
+00FD   24DB           00337         CALL DELAY
+00FE   24C2           00338         CALL EJECUTA
+00FF   3005           00339         MOVLW B'00101' 
+0100   0087           00340         MOVWF PORTC
+0101   24DB           00341         CALL DELAY
+0102   24C2           00342         CALL EJECUTA
+                      00343 
+0103   2376           00344         CALL CLAVE
+                      00345 
+0104   300C           00346         MOVLW B'01100' ;ASIGNO LA SEGUNDA LINEA
+0105   0087           00347         MOVWF PORTC
+0106   24DB           00348         CALL DELAY
+0107   24C2           00349         CALL EJECUTA
+0108   3003           00350         MOVLW B'00011' 
+0109   0087           00351         MOVWF PORTC
+010A   24DB           00352         CALL DELAY
+010B   24C2           00353         CALL EJECUTA
+                      00354 
+010C   237C           00355         CALL INCORRECTA
+010D   24E1           00356         CALL TIEMPO
+010E   24E1           00357         CALL TIEMPO
+010F   24E1           00358         CALL TIEMPO
+0110   24E1           00359         CALL TIEMPO
+0111   24E1           00360         CALL TIEMPO
+0112   24E1           00361         CALL TIEMPO
+                      00362 
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[203]: Found opcode in column 1. (GOTO)
+0113   2809           00363 GOTO REINICIO
+                      00364 
+0114                  00365 EXTRAE  
+0114   1103           00366         BCF STATUS,2
+0115   0850           00367         MOVFW DIG1
+0116   0759           00368         ADDWF DIG0,0
+0117   0751           00369         ADDWF DIG2,0
+0118   0752           00370         ADDWF DIG3,0
+0119   0753           00371         ADDWF DIG4,0
+011A   0754           00372         ADDWF DIG5,0
+011B   0755           00373         ADDWF DIG6,0
+011C   0756           00374         ADDWF DIG7,0
+011D   0757           00375         ADDWF DIG8,0
+011E   0758           00376         ADDWF DIG9,0
+011F   07E5           00377         ADDWF IDENTIFICADOR,1
+Warning[203]: Found opcode in column 1. (RETURN)
+0120   0008           00378 RETURN
+                      00379 
+0121                  00380 CORRECTA
+0121   2151           00381         CALL CURSOROFF
+0122   24C8           00382         CALL LIMPIEZA
+                      00383 
+0123   3008           00384         MOVLW B'01000' ;ASIGNO LA PRIMERA LINEA
+0124   0087           00385         MOVWF PORTC
+0125   24DB           00386         CALL DELAY
+0126   24C2           00387         CALL EJECUTA
+0127   3004           00388         MOVLW B'00100' 
+0128   0087           00389         MOVWF PORTC
+0129   24DB           00390         CALL DELAY
+012A   24C2           00391         CALL EJECUTA
+                      00392 
+012B   236D           00393         CALL CLAVECORRECTA
+                      00394 
+012C   24E1           00395         CALL TIEMPO
+012D   24E1           00396         CALL TIEMPO
+012E   24E1           00397         CALL TIEMPO
+012F   24E1           00398         CALL TIEMPO
+0130   24E1           00399         CALL TIEMPO
+                      00400 
+0131   24C8           00401         CALL LIMPIEZA
+0132   24E1           00402         CALL TIEMPO
+0133   24E1           00403         CALL TIEMPO
+0134   3008           00404         MOVLW B'01000' ;ASIGNO LA PRIMERA LINEA
+0135   0087           00405         MOVWF PORTC
+0136   24DB           00406         CALL DELAY
+0137   24C2           00407         CALL EJECUTA
+0138   3004           00408         MOVLW B'00100' 
+0139   0087           00409         MOVWF PORTC
+013A   24DB           00410         CALL DELAY
+013B   24C2           00411         CALL EJECUTA
+                      00412 
+013C   235B           00413         CALL ABRIENDO
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00414 
+013D   24E1           00415         CALL TIEMPO
+013E   24E1           00416         CALL TIEMPO
+                      00417 
+013F   2364           00418         CALL PUNTO
+0140   24E1           00419         CALL TIEMPO
+0141   2364           00420         CALL PUNTO
+0142   24E1           00421         CALL TIEMPO
+0143   2364           00422         CALL PUNTO
+0144   24E1           00423         CALL TIEMPO
+Warning[203]: Found opcode in column 1. (GOTO)
+0145   2809           00424 GOTO REINICIO
+                      00425 
+0146                  00426 LIMPIADIGITOS
+0146   01D9           00427         CLRF DIG0
+0147   01D0           00428         CLRF DIG1
+0148   01D1           00429         CLRF DIG2
+0149   01D2           00430         CLRF DIG3
+014A   01D3           00431         CLRF DIG4
+014B   01D4           00432         CLRF DIG5
+014C   01D5           00433         CLRF DIG6
+014D   01D6           00434         CLRF DIG7
+014E   01D7           00435         CLRF DIG8
+014F   01D8           00436         CLRF DIG9
+Warning[203]: Found opcode in column 1. (RETURN)
+0150   0008           00437 RETURN
+                      00438 
+0151                  00439 CURSOROFF
+0151   3000           00440         MOVLW B'00000' ;DESACTIVO EL CURSOR
+0152   0087           00441         MOVWF PORTC
+0153   24DB           00442         CALL DELAY
+0154   24C2           00443         CALL EJECUTA
+0155   300C           00444         MOVLW B'01100' 
+0156   0087           00445         MOVWF PORTC
+0157   24DB           00446         CALL DELAY
+0158   24C2           00447         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+0159   0008           00448 RETURN
+                      00449         
+                      00450 ;-------MENU------
+015A                  00451 MENU
+015A   3010           00452         MOVLW 0X10
+015B   00E4           00453         MOVWF ABRIROADMIN 
+015C   01C6           00454         CLRF DOS_SET
+015D   24C8           00455         CALL LIMPIEZA
+015E   2853           00456         GOTO ABRIR
+015F                  00457 CAMBIARCONTRA
+015F   2212           00458         CALL CAMBIARESTADO
+0160   2151           00459         CALL CURSOROFF
+0161   24C8           00460         CALL LIMPIEZA
+0162   2343           00461         CALL NUEVACONTRASEÑA
+                      00462 
+                      00463         ;PERMITO EL CURSOR
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0163   3000           00464         MOVLW B'00000' ;ASIGNO LA POSICION DE ESCRITURA
+0164   0087           00465         MOVWF PORTC
+0165   24DB           00466         CALL DELAY
+0166   24C2           00467         CALL EJECUTA
+0167   300F           00468         MOVLW B'01111' 
+0168   0087           00469         MOVWF PORTC
+0169   24DB           00470         CALL DELAY
+016A   24C2           00471         CALL EJECUTA
+                      00472         ;password
+016B   2390           00473         CALL PASSWORD
+016C   300C           00474         MOVLW B'01100' ;ASIGNO LA POSICION DE ESCRITURA
+016D   0087           00475         MOVWF PORTC
+016E   24DB           00476         CALL DELAY
+016F   24C2           00477         CALL EJECUTA
+0170   3005           00478         MOVLW B'00101' 
+0171   0087           00479         MOVWF PORTC
+0172   24DB           00480         CALL DELAY
+0173   24C2           00481         CALL EJECUTA
+                      00482         ;LIMPIO LO QUE SE USARÁ PARA EVITAR ERRORES
+0174   1103           00483         BCF STATUS,2
+0175   01D9           00484         CLRF DIG0
+0176   01D0           00485         CLRF DIG1
+0177   01D1           00486         CLRF DIG2
+0178   01D2           00487         CLRF DIG3
+0179   01D3           00488         CLRF DIG4
+017A   01D4           00489         CLRF DIG5
+017B   01D5           00490         CLRF DIG6
+017C   01DC           00491         CLRF CONTADOR
+017D   01DD           00492         CLRF CONTADORLIMITE
+017E   01DE           00493         CLRF COMPARADORLIMITE
+017F   1103           00494         BCF STATUS,2
+                      00495         
+0180   3000           00496         MOVLW 0X00 ;0X00 PARA NUMEROS 0XFF PARA PASSWORD
+0181   00DF           00497         MOVWF MODOPASSWORD
+0182                  00498 SETD1 ;HORA  DE VERIFICAR LOS DATOS GUARDADOS LA CONTRASEÑA SERÁ .23 , .24, .25, .26
+0182   20ED           00499         CALL CONFIRMA   
+0183   2229           00500         CALL TECLADO    
+                      00501 
+0184   2114           00502         CALL EXTRAE
+                      00503         ;MOVFW IDENTIFICADOR
+                      00504         ;MOVWF DIG1TEST
+0185   085D           00505         MOVFW CONTADORLIMITE
+0186   3A01           00506         XORLW 0X01 ;PUEDE VARIAR SI HAY ERRORES
+0187   1D03           00507         BTFSS STATUS,2
+0188   2982           00508         GOTO SETD1
+0189   21AE           00509         CALL ESCRIBE1
+018A   1103           00510         BCF STATUS,2
+018B   2146           00511         CALL LIMPIADIGITOS
+018C   01E5           00512         CLRF IDENTIFICADOR
+018D                  00513 SETD2
+018D   20ED           00514         CALL CONFIRMA   
+018E   2229           00515         CALL TECLADO    
+018F   2114           00516         CALL EXTRAE
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00517         ;MOVFW IDENTIFICADOR
+                      00518         ;MOVWF DIG2TEST
+0190   085D           00519         MOVFW CONTADORLIMITE
+0191   3A02           00520         XORLW 0X02 ;PUEDE VARIAR SI HAY ERRORES
+0192   1D03           00521         BTFSS STATUS,2
+0193   298D           00522         GOTO SETD2
+0194   21C7           00523         CALL ESCRIBE2
+0195   1103           00524         BCF STATUS,2
+0196   2146           00525         CALL LIMPIADIGITOS
+0197   01E5           00526         CLRF IDENTIFICADOR
+0198                  00527 SETD3
+0198   20ED           00528         CALL CONFIRMA   
+0199   2229           00529         CALL TECLADO    
+019A   2114           00530         CALL EXTRAE
+                      00531         ;MOVFW IDENTIFICADOR
+                      00532         ;MOVWF DIG3TEST
+                      00533 
+019B   085D           00534         MOVFW CONTADORLIMITE
+019C   3A03           00535         XORLW 0X03 ;PUEDE VARIAR SI HAY ERRORES
+019D   1D03           00536         BTFSS STATUS,2
+019E   2998           00537         GOTO SETD3
+019F   1103           00538         BCF STATUS,2
+01A0   21E0           00539         CALL ESCRIBE3
+01A1   2146           00540         CALL LIMPIADIGITOS
+01A2   01E5           00541         CLRF IDENTIFICADOR
+01A3                  00542 SETD4
+01A3   20ED           00543         CALL CONFIRMA   
+01A4   2229           00544         CALL TECLADO    
+01A5   2114           00545         CALL EXTRAE
+                      00546         ;MOVFW IDENTIFICADOR
+                      00547         ;MOVWF DIG4TEST
+01A6   085D           00548         MOVFW CONTADORLIMITE
+01A7   3A04           00549         XORLW 0X04 ;PUEDE VARIAR SI HAY ERRORES
+01A8   1D03           00550         BTFSS STATUS,2
+01A9   29A3           00551         GOTO SETD4
+01AA   21F9           00552         CALL ESCRIBE4
+01AB   2146           00553         CALL LIMPIADIGITOS
+01AC   01E5           00554         CLRF IDENTIFICADOR
+                      00555 
+                      00556 ;-----------
+01AD   2809           00557         GOTO REINICIO ;CORRECTA SE HABRE
+                      00558 
+                      00559 ;--------------------EEPROM--------------
+01AE                  00560 ESCRIBE1
+01AE   1703           00561         BSF STATUS,RP1 
+01AF   1683           00562         BSF STATUS,RP0
+01B0                  00563 E1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01B0   188C           00564         BTFSC EECON1,WR ;Wait for write
+01B1   29B0           00565         GOTO E1 ;to complete
+01B2   1283           00566         BCF STATUS, RP0 ;Bank 2
+01B3   3001           00567         MOVLW 0X01 ;Data Memory
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01B4   008D           00568         MOVWF EEADR ;Address to write
+01B5   1283           00569         BCF STATUS,5
+01B6   1303           00570         BCF STATUS,6
+01B7   0865           00571         MOVFW IDENTIFICADOR 
+01B8   1703           00572         BSF STATUS,6
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01B9   008C           00573         MOVWF EEDATA ;to write
+01BA   1683           00574         BSF STATUS,RP0 ;Bank 3
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01BB   138C           00575         BCF EECON1,EEPGD ;Point to DATA
+                      00576         ;memory
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01BC   150C           00577         BSF EECON1,WREN ;Enable writes
+                      00578         
+01BD   138B           00579         BCF INTCON,GIE ;Disable INTs.
+01BE   3055           00580         MOVLW 0X55;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01BF   008D           00581         MOVWF EECON2 ;Write 55h
+01C0   30AA           00582         MOVLW 0XAA ;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01C1   008D           00583         MOVWF EECON2 ;Write AAh
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01C2   148C           00584         BSF EECON1,WR ;Set WR bit to
+                      00585         ;begin write
+01C3   178B           00586         BSF INTCON,GIE ;Enable INTs.
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01C4   110C           00587         BCF EECON1,WREN ;Disable writes
+01C5   0183           00588         CLRF STATUS
+Warning[203]: Found opcode in column 1. (RETURN)
+01C6   0008           00589 RETURN
+01C7                  00590 ESCRIBE2
+01C7   1703           00591         BSF STATUS,RP1 
+01C8   1683           00592         BSF STATUS,RP0
+01C9                  00593 E2
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01C9   188C           00594         BTFSC EECON1,WR ;Wait for write
+01CA   29C9           00595         GOTO E2 ;to complete
+01CB   1283           00596         BCF STATUS, RP0 ;Bank 2
+01CC   3002           00597         MOVLW 0X02 ;Data Memory
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01CD   008D           00598         MOVWF EEADR ;Address to write
+01CE   1283           00599         BCF STATUS,5
+01CF   1303           00600         BCF STATUS,6
+01D0   0865           00601         MOVFW IDENTIFICADOR 
+01D1   1703           00602         BSF STATUS,6
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01D2   008C           00603         MOVWF EEDATA ;to write
+01D3   1683           00604         BSF STATUS,RP0 ;Bank 3
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01D4   138C           00605         BCF EECON1,EEPGD ;Point to DATA
+                      00606         ;memory
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01D5   150C           00607         BSF EECON1,WREN ;Enable writes
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00608         
+01D6   138B           00609         BCF INTCON,GIE ;Disable INTs.
+01D7   3055           00610         MOVLW 0X55;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01D8   008D           00611         MOVWF EECON2 ;Write 55h
+01D9   30AA           00612         MOVLW 0XAA ;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01DA   008D           00613         MOVWF EECON2 ;Write AAh
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01DB   148C           00614         BSF EECON1,WR ;Set WR bit to
+                      00615         ;begin write
+01DC   178B           00616         BSF INTCON,GIE ;Enable INTs.
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01DD   110C           00617         BCF EECON1,WREN ;Disable writes
+01DE   0183           00618         CLRF STATUS
+Warning[203]: Found opcode in column 1. (RETURN)
+01DF   0008           00619 RETURN
+01E0                  00620 ESCRIBE3
+01E0   1703           00621         BSF STATUS,RP1 
+01E1   1683           00622         BSF STATUS,RP0
+01E2                  00623 E3
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01E2   188C           00624         BTFSC EECON1,WR ;Wait for write
+01E3   29E2           00625         GOTO E3 ;to complete
+01E4   1283           00626         BCF STATUS, RP0 ;Bank 2
+01E5   3003           00627         MOVLW 0X03 ;Data Memory
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01E6   008D           00628         MOVWF EEADR ;Address to write
+01E7   1283           00629         BCF STATUS,5
+01E8   1303           00630         BCF STATUS,6
+01E9   0865           00631         MOVFW IDENTIFICADOR 
+01EA   1703           00632         BSF STATUS,6
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01EB   008C           00633         MOVWF EEDATA ;to write
+01EC   1683           00634         BSF STATUS,RP0 ;Bank 3
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01ED   138C           00635         BCF EECON1,EEPGD ;Point to DATA
+                      00636         ;memory
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01EE   150C           00637         BSF EECON1,WREN ;Enable writes
+                      00638         
+01EF   138B           00639         BCF INTCON,GIE ;Disable INTs.
+01F0   3055           00640         MOVLW 0X55;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01F1   008D           00641         MOVWF EECON2 ;Write 55h
+01F2   30AA           00642         MOVLW 0XAA ;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01F3   008D           00643         MOVWF EECON2 ;Write AAh
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01F4   148C           00644         BSF EECON1,WR ;Set WR bit to
+                      00645         ;begin write
+01F5   178B           00646         BSF INTCON,GIE ;Enable INTs.
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01F6   110C           00647         BCF EECON1,WREN ;Disable writes
+01F7   0183           00648         CLRF STATUS
+Warning[203]: Found opcode in column 1. (RETURN)
+01F8   0008           00649 RETURN
+01F9                  00650 ESCRIBE4
+01F9   1703           00651         BSF STATUS,RP1 
+01FA   1683           00652         BSF STATUS,RP0
+01FB                  00653 E4
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01FB   188C           00654         BTFSC EECON1,WR ;Wait for write
+01FC   29FB           00655         GOTO E4 ;to complete
+01FD   1283           00656         BCF STATUS, RP0 ;Bank 2
+01FE   3004           00657         MOVLW 0X04 ;Data Memory
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+01FF   008D           00658         MOVWF EEADR ;Address to write
+0200   1283           00659         BCF STATUS,5
+0201   1303           00660         BCF STATUS,6
+0202   0865           00661         MOVFW IDENTIFICADOR 
+0203   1703           00662         BSF STATUS,6
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0204   008C           00663         MOVWF EEDATA ;to write
+0205   1683           00664         BSF STATUS,RP0 ;Bank 3
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0206   138C           00665         BCF EECON1,EEPGD ;Point to DATA
+                      00666         ;memory
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0207   150C           00667         BSF EECON1,WREN ;Enable writes
+                      00668         
+0208   138B           00669         BCF INTCON,GIE ;Disable INTs.
+0209   3055           00670         MOVLW 0X55;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+020A   008D           00671         MOVWF EECON2 ;Write 55h
+020B   30AA           00672         MOVLW 0XAA ;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+020C   008D           00673         MOVWF EECON2 ;Write AAh
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+020D   148C           00674         BSF EECON1,WR ;Set WR bit to
+                      00675         ;begin write
+020E   178B           00676         BSF INTCON,GIE ;Enable INTs.
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+020F   110C           00677         BCF EECON1,WREN ;Disable writes
+0210   0183           00678         CLRF STATUS
+Warning[203]: Found opcode in column 1. (RETURN)
+0211   0008           00679 RETURN
+0212                  00680 CAMBIARESTADO
+0212   178B           00681         BSF INTCON,GIE ;Enable INTs.
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0213   110C           00682         BCF EECON1,WREN ;Disable writes
+0214                  00683 CE
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0214   188C           00684         BTFSC EECON1,WR ;Wait for write
+0215   2A14           00685         GOTO CE ;to complete
+0216   1283           00686         BCF STATUS, RP0 ;Bank 2
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 16
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0217   305E           00687         MOVLW 0X5E ;Data Memory
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0218   008D           00688         MOVWF EEADR ;Address to write
+0219   3000           00689         MOVLW 0X00 ;Data Memory Value
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+021A   008C           00690         MOVWF EEDATA ;to write
+021B   1683           00691         BSF STATUS,RP0 ;Bank 3
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+021C   138C           00692         BCF EECON1,EEPGD ;Point to DATA
+                      00693         ;memory
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+021D   150C           00694         BSF EECON1,WREN ;Enable writes
+                      00695         
+021E   138B           00696         BCF INTCON,GIE ;Disable INTs.
+021F   3055           00697         MOVLW 0X55;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0220   008D           00698         MOVWF EECON2 ;Write 55h
+0221   30AA           00699         MOVLW 0XAA ;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0222   008D           00700         MOVWF EECON2 ;Write AAh
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0223   148C           00701         BSF EECON1,WR ;Set WR bit to
+                      00702         ;begin write
+0224   178B           00703         BSF INTCON,GIE ;Enable INTs.
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0225   110C           00704         BCF EECON1,WREN ;Disable writes
+0226   1283           00705         BCF STATUS,5
+0227   1303           00706         BCF STATUS,6
+Warning[203]: Found opcode in column 1. (RETURN)
+0228   0008           00707 RETURN
+                      00708 ;---TECLADO----
+0229                  00709 TECLADO
+0229   0187           00710         CLRF PORTC
+022A   0186           00711         CLRF PORTB
+022B   1406           00712         BSF PORTB,0
+022C   223A           00713         CALL PREGUNTA1
+022D   0187           00714         CLRF PORTC
+022E   0186           00715         CLRF PORTB
+022F   1486           00716         BSF PORTB,1
+0230   2241           00717         CALL PREGUNTA2
+0231   0187           00718         CLRF PORTC
+0232   0186           00719         CLRF PORTB
+0233   1506           00720         BSF PORTB,2
+0234   2248           00721         CALL PREGUNTA3
+0235   0187           00722         CLRF PORTC
+0236   0186           00723         CLRF PORTB
+0237   1586           00724         BSF PORTB,3
+0238   224F           00725         CALL PREGUNTA4
+Warning[203]: Found opcode in column 1. (RETURN)
+0239   0008           00726 RETURN
+                      00727 ;-PREGUNTAS
+023A                  00728 PREGUNTA1
+023A   1A06           00729         BTFSC PORTB,4
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 17
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+023B   2256           00730         CALL NUMUNO
+023C   1A86           00731         BTFSC PORTB,5
+023D   226D           00732         CALL NUMDOS
+023E   1B06           00733         BTFSC PORTB,6
+023F   2283           00734         CALL NUMTRES
+Warning[203]: Found opcode in column 1. (RETURN)
+0240   0008           00735 RETURN
+0241                  00736 PREGUNTA2
+0241   1A06           00737         BTFSC PORTB,4
+0242   2297           00738         CALL NUMCUATRO
+0243   1A86           00739         BTFSC PORTB,5
+0244   22AB           00740         CALL NUMCINCO
+0245   1B06           00741         BTFSC PORTB,6
+0246   22BF           00742         CALL NUMSEIS
+Warning[203]: Found opcode in column 1. (RETURN)
+0247   0008           00743 RETURN
+0248                  00744 PREGUNTA3
+0248   1A06           00745         BTFSC PORTB,4
+0249   22D3           00746         CALL NUMSIETE
+024A   1A86           00747         BTFSC PORTB,5
+024B   22E7           00748         CALL NUMOCHO
+024C   1B06           00749         BTFSC PORTB,6
+024D   22FB           00750         CALL NUMNUEVE
+Warning[203]: Found opcode in column 1. (RETURN)
+024E   0008           00751 RETURN
+024F                  00752 PREGUNTA4
+024F   1A06           00753         BTFSC PORTB,4
+0250   230F           00754         CALL NUMAST
+0251   1A86           00755         BTFSC PORTB,5
+0252   2321           00756         CALL NUMCERO
+0253   1B06           00757         BTFSC PORTB,6
+0254   2336           00758         CALL NUMGATO
+Warning[203]: Found opcode in column 1. (RETURN)
+0255   0008           00759 RETURN
+                      00760 ;--CONFIRMACIONES
+0256                  00761 NUMUNO
+0256   20E6           00762         CALL CUENTADIGITOS ;CUENTA LOS CLICKS PARA UN LIMITE DE 4 DIGITOS
+0257   3014           00763         MOVLW .20
+0258   00C5           00764         MOVWF UNO_SET
+                      00765 
+0259   3017           00766         MOVLW .23       ;ASIGNO VALOR PARA LA CONTRASEÑA
+025A   00D0           00767         MOVWF DIG1
+                      00768 
+025B   1103           00769         BCF STATUS,2
+025C   1003           00770         BCF STATUS,0
+025D   2312           00771         CALL _AST
+025E   085F           00772         MOVFW MODOPASSWORD ;ASIGNA EL * O 1
+025F   3A00           00773         XORLW 0X00
+0260   1903           00774         BTFSC STATUS,2 ;
+0261   2263           00775         CALL _UNO
+Warning[203]: Found opcode in column 1. (RETURN)
+0262   0008           00776 RETURN
+0263                  00777 _UNO
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 18
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0263   3013           00778         MOVLW B'10011' ;1
+0264   0087           00779         MOVWF PORTC
+0265   24DB           00780         CALL DELAY
+0266   24C2           00781         CALL EJECUTA
+0267   3011           00782         MOVLW B'10001'  
+0268   0087           00783         MOVWF PORTC
+0269   24DB           00784         CALL DELAY
+026A   24C2           00785         CALL EJECUTA
+026B   24E1           00786         CALL TIEMPO
+Warning[203]: Found opcode in column 1. (RETURN)
+026C   0008           00787 RETURN
+026D                  00788 NUMDOS
+026D   20E6           00789         CALL CUENTADIGITOS ;CUENTA LOS CLICKS PARA UN LIMITE DE 4 DIGITOS
+026E   3015           00790         MOVLW .21
+026F   00C6           00791         MOVWF DOS_SET
+0270   3018           00792         MOVLW .24       
+0271   00D1           00793         MOVWF DIG2 ;ASIGNO VALOR PARA LA CONTRASEÑA
+0272   1003           00794         BCF STATUS,0
+0273   2312           00795         CALL _AST
+0274   085F           00796         MOVFW MODOPASSWORD ;ASIGNA EL * O 1
+0275   3A00           00797         XORLW 0X00
+0276   1903           00798         BTFSC STATUS,2 ;
+0277   2279           00799     CALL _DOS
+Warning[203]: Found opcode in column 1. (RETURN)
+0278   0008           00800 RETURN
+0279                  00801 _DOS
+0279   3013           00802         MOVLW B'10011' ;2
+027A   0087           00803         MOVWF PORTC
+027B   24DB           00804         CALL DELAY
+027C   24C2           00805         CALL EJECUTA
+027D   3012           00806         MOVLW B'10010'  
+027E   0087           00807         MOVWF PORTC
+027F   24DB           00808         CALL DELAY
+0280   24C2           00809         CALL EJECUTA
+0281   24E1           00810         CALL TIEMPO     
+Warning[203]: Found opcode in column 1. (RETURN)
+0282   0008           00811 RETURN
+0283                  00812 NUMTRES
+0283   20E6           00813         CALL CUENTADIGITOS ;CUENTA LOS CLICKS PARA UN LIMITE DE 4 DIGITOS
+0284   1003           00814         BCF STATUS,0
+0285   3019           00815         MOVLW .25       
+0286   00D2           00816         MOVWF DIG3 ;ASIGNO VALOR PARA LA CONTRASEÑA
+                      00817 
+0287   2312           00818         CALL _AST
+0288   085F           00819         MOVFW MODOPASSWORD ;ASIGNA EL * O 1
+0289   3A00           00820         XORLW 0X00
+028A   1903           00821         BTFSC STATUS,2 ;
+028B   228D           00822     CALL _TRES
+Warning[203]: Found opcode in column 1. (RETURN)
+028C   0008           00823 RETURN
+028D                  00824 _TRES
+028D   3013           00825         MOVLW B'10011' ;3
+028E   0087           00826         MOVWF PORTC
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 19
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+028F   24DB           00827         CALL DELAY
+0290   24C2           00828         CALL EJECUTA
+0291   3013           00829         MOVLW B'10011'  
+0292   0087           00830         MOVWF PORTC
+0293   24DB           00831         CALL DELAY
+0294   24C2           00832         CALL EJECUTA
+0295   24E1           00833         CALL TIEMPO
+Warning[203]: Found opcode in column 1. (RETURN)
+0296   0008           00834 RETURN
+0297                  00835 NUMCUATRO
+0297   20E6           00836         CALL CUENTADIGITOS ;CUENTA LOS CLICKS PARA UN LIMITE DE 4 DIGITOS
+0298   1003           00837         BCF STATUS,0
+0299   301A           00838         MOVLW .26       
+029A   00D3           00839         MOVWF DIG4 ;ASIGNO VALOR PARA LA CONTRASEÑA
+029B   2312           00840         CALL _AST
+029C   085F           00841         MOVFW MODOPASSWORD ;ASIGNA EL * O 1
+029D   3A00           00842         XORLW 0X00
+029E   1903           00843         BTFSC STATUS,2 ;
+029F   22A1           00844     CALL _CUATRO
+Warning[203]: Found opcode in column 1. (RETURN)
+02A0   0008           00845 RETURN
+02A1                  00846 _CUATRO
+02A1   3013           00847         MOVLW B'10011' ;4
+02A2   0087           00848         MOVWF PORTC
+02A3   24DB           00849         CALL DELAY
+02A4   24C2           00850         CALL EJECUTA
+02A5   3014           00851         MOVLW B'10100'  
+02A6   0087           00852         MOVWF PORTC
+02A7   24DB           00853         CALL DELAY
+02A8   24C2           00854         CALL EJECUTA
+02A9   24E1           00855         CALL TIEMPO
+Warning[203]: Found opcode in column 1. (RETURN)
+02AA   0008           00856 RETURN  
+02AB                  00857 NUMCINCO
+02AB   20E6           00858         CALL CUENTADIGITOS ;CUENTA LOS CLICKS PARA UN LIMITE DE 4 DIGITOS
+02AC   1003           00859         BCF STATUS,0
+02AD   301B           00860         MOVLW .27       
+02AE   00D4           00861         MOVWF DIG5 ;ASIGNO VALOR PARA LA CONTRASEÑA
+02AF   2312           00862         CALL _AST
+02B0   085F           00863         MOVFW MODOPASSWORD ;ASIGNA EL * O 1
+02B1   3A00           00864         XORLW 0X00
+02B2   1903           00865         BTFSC STATUS,2 ;
+02B3   22B5           00866     CALL _CINCO
+Warning[203]: Found opcode in column 1. (RETURN)
+02B4   0008           00867 RETURN
+02B5                  00868 _CINCO
+02B5   3013           00869         MOVLW B'10011' ;5
+02B6   0087           00870         MOVWF PORTC
+02B7   24DB           00871         CALL DELAY
+02B8   24C2           00872         CALL EJECUTA
+02B9   3015           00873         MOVLW B'10101'  
+02BA   0087           00874         MOVWF PORTC
+02BB   24DB           00875         CALL DELAY
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 20
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+02BC   24C2           00876         CALL EJECUTA
+02BD   24E1           00877         CALL TIEMPO
+Warning[203]: Found opcode in column 1. (RETURN)
+02BE   0008           00878 RETURN
+02BF                  00879 NUMSEIS
+02BF   20E6           00880         CALL CUENTADIGITOS ;CUENTA LOS CLICKS PARA UN LIMITE DE 4 DIGITOS
+02C0   1003           00881         BCF STATUS,0
+02C1   301C           00882         MOVLW .28       
+02C2   00D5           00883         MOVWF DIG6 ;ASIGNO VALOR PARA LA CONTRASEÑA
+02C3   2312           00884         CALL _AST
+02C4   085F           00885         MOVFW MODOPASSWORD ;ASIGNA EL * O 1
+02C5   3A00           00886         XORLW 0X00
+02C6   1903           00887         BTFSC STATUS,2 ;
+02C7   22C9           00888     CALL _SEIS
+Warning[203]: Found opcode in column 1. (RETURN)
+02C8   0008           00889 RETURN
+02C9                  00890 _SEIS
+02C9   3013           00891         MOVLW B'10011' ;6
+02CA   0087           00892         MOVWF PORTC
+02CB   24DB           00893         CALL DELAY
+02CC   24C2           00894         CALL EJECUTA
+02CD   3016           00895         MOVLW B'10110'  
+02CE   0087           00896         MOVWF PORTC
+02CF   24DB           00897         CALL DELAY
+02D0   24C2           00898         CALL EJECUTA
+02D1   24E1           00899         CALL TIEMPO
+Warning[203]: Found opcode in column 1. (RETURN)
+02D2   0008           00900 RETURN
+02D3                  00901 NUMSIETE
+02D3   20E6           00902         CALL CUENTADIGITOS ;CUENTA LOS CLICKS PARA UN LIMITE DE 4 DIGITOS
+02D4   1003           00903         BCF STATUS,0
+02D5   301D           00904         MOVLW .29       
+02D6   00D6           00905         MOVWF DIG7 ;ASIGNO VALOR PARA LA CONTRASEÑA
+02D7   2312           00906         CALL _AST
+02D8   085F           00907         MOVFW MODOPASSWORD ;ASIGNA EL * O 1
+02D9   3A00           00908         XORLW 0X00
+02DA   1903           00909         BTFSC STATUS,2 ;
+02DB   22DD           00910     CALL _SIETE
+Warning[203]: Found opcode in column 1. (RETURN)
+02DC   0008           00911 RETURN
+02DD                  00912 _SIETE
+02DD   3013           00913         MOVLW B'10011' ;7
+02DE   0087           00914         MOVWF PORTC
+02DF   24DB           00915         CALL DELAY
+02E0   24C2           00916         CALL EJECUTA
+02E1   3017           00917         MOVLW B'10111'  
+02E2   0087           00918         MOVWF PORTC
+02E3   24DB           00919         CALL DELAY
+02E4   24C2           00920         CALL EJECUTA
+02E5   24E1           00921         CALL TIEMPO
+Warning[203]: Found opcode in column 1. (RETURN)
+02E6   0008           00922 RETURN
+02E7                  00923 NUMOCHO
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 21
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+02E7   20E6           00924         CALL CUENTADIGITOS ;CUENTA LOS CLICKS PARA UN LIMITE DE 4 DIGITOS
+02E8   1003           00925         BCF STATUS,0
+02E9   301E           00926         MOVLW .30
+02EA   00D7           00927         MOVWF DIG8 ;ASIGNO VALOR PARA LA CONTRASEÑA
+02EB   2312           00928         CALL _AST
+02EC   085F           00929         MOVFW MODOPASSWORD ;ASIGNA EL * O 1
+02ED   3A00           00930         XORLW 0X00
+02EE   1903           00931         BTFSC STATUS,2 ;
+02EF   22F1           00932     CALL _OCHO
+Warning[203]: Found opcode in column 1. (RETURN)
+02F0   0008           00933 RETURN
+02F1                  00934 _OCHO
+02F1   3013           00935         MOVLW B'10011' ;8
+02F2   0087           00936         MOVWF PORTC
+02F3   24DB           00937         CALL DELAY
+02F4   24C2           00938         CALL EJECUTA
+02F5   3018           00939         MOVLW B'11000'  
+02F6   0087           00940         MOVWF PORTC
+02F7   24DB           00941         CALL DELAY
+02F8   24C2           00942         CALL EJECUTA
+02F9   24E1           00943         CALL TIEMPO
+Warning[203]: Found opcode in column 1. (RETURN)
+02FA   0008           00944 RETURN
+02FB                  00945 NUMNUEVE
+02FB   20E6           00946         CALL CUENTADIGITOS ;CUENTA LOS CLICKS PARA UN LIMITE DE 4 DIGITOS
+02FC   1003           00947         BCF STATUS,0
+02FD   301F           00948         MOVLW .31       
+02FE   00D8           00949         MOVWF DIG9 ;ASIGNO VALOR PARA LA CONTRASEÑA
+02FF   2312           00950         CALL _AST
+0300   085F           00951         MOVFW MODOPASSWORD ;ASIGNA EL * O 1
+0301   3A00           00952         XORLW 0X00
+0302   1903           00953         BTFSC STATUS,2 ;
+0303   2305           00954     CALL _NUEVE
+Warning[203]: Found opcode in column 1. (RETURN)
+0304   0008           00955 RETURN
+0305                  00956 _NUEVE
+0305   3013           00957         MOVLW B'10011' ;9
+0306   0087           00958         MOVWF PORTC
+0307   24DB           00959         CALL DELAY
+0308   24C2           00960         CALL EJECUTA
+0309   3019           00961         MOVLW B'11001'  
+030A   0087           00962         MOVWF PORTC
+030B   24DB           00963         CALL DELAY
+030C   24C2           00964         CALL EJECUTA
+030D   24E1           00965         CALL TIEMPO     
+Warning[203]: Found opcode in column 1. (RETURN)
+030E   0008           00966 RETURN
+                      00967 
+030F                  00968 NUMAST
+030F   1003           00969         BCF STATUS,0
+0310   2312           00970         CALL _AST
+Warning[203]: Found opcode in column 1. (RETURN)
+0311   0008           00971 RETURN
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 22
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0312                  00972 _AST
+0312   085F           00973         MOVFW MODOPASSWORD ;ASIGNA EL * O 1
+0313   3AFF           00974         XORLW 0XFF
+0314   1903           00975         BTFSC STATUS,2 ;
+0315   2317           00976     CALL SUBAST
+Warning[203]: Found opcode in column 1. (RETURN)
+0316   0008           00977 RETURN
+0317                  00978 SUBAST
+0317   3012           00979         MOVLW B'10010' ;*
+0318   0087           00980         MOVWF PORTC
+0319   24DB           00981         CALL DELAY
+031A   24C2           00982         CALL EJECUTA
+031B   301A           00983         MOVLW B'11010'  
+031C   0087           00984         MOVWF PORTC
+031D   24DB           00985         CALL DELAY
+031E   24C2           00986         CALL EJECUTA
+031F   24E1           00987         CALL TIEMPO
+Warning[203]: Found opcode in column 1. (RETURN)
+0320   0008           00988 RETURN
+0321                  00989 NUMCERO
+0321   20E6           00990         CALL CUENTADIGITOS ;CUENTA LOS CLICKS PARA UN LIMITE DE 4 DIGITOS
+0322   1003           00991         BCF STATUS,0
+0323   1103           00992         BCF STATUS,2
+0324   30FF           00993         MOVLW 0XFF              
+0325   00D9           00994         MOVWF DIG0 ;ASIGNO VALOR PARA LA CONTRASEÑA
+0326   2312           00995         CALL _AST
+0327   085F           00996         MOVFW MODOPASSWORD ;ASIGNA EL * O 1
+0328   3A00           00997         XORLW 0X00
+0329   1903           00998         BTFSC STATUS,2 ;
+032A   232C           00999     CALL _CERO
+Warning[203]: Found opcode in column 1. (RETURN)
+032B   0008           01000 RETURN
+032C                  01001 _CERO
+032C   3013           01002         MOVLW B'10011' ;0
+032D   0087           01003         MOVWF PORTC
+032E   24DB           01004         CALL DELAY
+032F   24C2           01005         CALL EJECUTA
+0330   3010           01006         MOVLW B'10000'  
+0331   0087           01007         MOVWF PORTC
+0332   24DB           01008         CALL DELAY
+0333   24C2           01009         CALL EJECUTA
+0334   24E1           01010         CALL TIEMPO     
+Warning[203]: Found opcode in column 1. (RETURN)
+0335   0008           01011 RETURN
+0336                  01012 NUMGATO
+0336   3021           01013         MOVLW .33       
+0337   00DA           01014         MOVWF DIGGATO ;ASIGNO VALOR PARA LA CONTRASEÑA
+0338   1003           01015         BCF STATUS,0
+0339   3012           01016         MOVLW B'10010' ;#
+033A   0087           01017         MOVWF PORTC
+033B   24DB           01018         CALL DELAY
+033C   24C2           01019         CALL EJECUTA
+033D   3013           01020         MOVLW B'10011'  
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 23
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+033E   0087           01021         MOVWF PORTC
+033F   24DB           01022         CALL DELAY
+0340   24C2           01023         CALL EJECUTA
+0341   24E1           01024         CALL TIEMPO
+Warning[203]: Found opcode in column 1. (RETURN)
+0342   0008           01025 RETURN
+                      01026 
+                      01027 
+                      01028 ;-------------------LCD***PALABRAS**NO TOCAR-------------------
+0343                  01029 NUEVACONTRASEÑA
+0343   2444           01030         CALL N_
+0344   2495           01031         CALL U_
+0345   243B           01032         CALL E_
+0346   248C           01033         CALL V_
+0347   2417           01034         CALL A_ 
+0348   3012           01035         MOVLW B'10010' ; ESPACIO
+0349   0087           01036         MOVWF PORTC
+034A   24DB           01037         CALL DELAY
+034B   24C2           01038         CALL EJECUTA
+034C   3010           01039         MOVLW B'10000'  
+034D   0087           01040         MOVWF PORTC
+034E   24DB           01041         CALL DELAY
+034F   24C2           01042         CALL EJECUTA
+0350   247A           01043         CALL C_
+0351   2456           01044         CALL O_
+0352   2444           01045         CALL N_
+0353   2483           01046         CALL T_
+0354   2429           01047         CALL R_
+0355   2417           01048         CALL A_ ;A
+0356   245F           01049         CALL S_ ;E
+0357   243B           01050         CALL E_
+0358   249E           01051         CALL Ñ_
+0359   2417           01052         CALL A_
+Warning[203]: Found opcode in column 1. (RETURN)
+035A   0008           01053 RETURN
+035B                  01054 ABRIENDO
+035B   2417           01055         CALL A_
+035C   2420           01056         CALL B_
+035D   2429           01057         CALL R_
+035E   2432           01058         CALL I_
+035F   243B           01059         CALL E_
+0360   2444           01060         CALL N_
+0361   244D           01061         CALL D_
+0362   2456           01062         CALL O_
+Warning[203]: Found opcode in column 1. (RETURN)
+0363   0008           01063 RETURN
+0364                  01064 PUNTO
+0364   3012           01065         MOVLW B'10010' ;.
+0365   0087           01066         MOVWF PORTC
+0366   24DB           01067         CALL DELAY
+0367   24C2           01068         CALL EJECUTA
+0368   301E           01069         MOVLW B'11110'
+0369   0087           01070         MOVWF PORTC
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 24
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+036A   24DB           01071         CALL DELAY
+036B   24C2           01072         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+036C   0008           01073 RETURN
+                      01074 
+036D                  01075 CLAVECORRECTA
+036D   247A           01076         CALL C_
+036E   2456           01077         CALL O_
+036F   2429           01078         CALL R_
+0370   2429           01079         CALL R_
+0371   243B           01080         CALL E_
+0372   247A           01081         CALL C_
+0373   2483           01082         CALL T_
+0374   2417           01083         CALL A_
+Warning[203]: Found opcode in column 1. (RETURN)
+0375   0008           01084 RETURN
+0376                  01085 CLAVE
+0376   247A           01086         CALL C_
+0377   2468           01087         CALL L_
+0378   2417           01088         CALL A_
+0379   248C           01089         CALL V_
+037A   243B           01090         CALL E_
+Warning[203]: Found opcode in column 1. (RETURN)
+037B   0008           01091 RETURN
+037C                  01092 INCORRECTA
+037C   2432           01093         CALL I_
+037D   2444           01094         CALL N_
+037E   247A           01095         CALL C_
+037F   2456           01096         CALL O_
+0380   2429           01097         CALL R_
+0381   2429           01098         CALL R_
+0382   243B           01099         CALL E_
+0383   247A           01100         CALL C_
+0384   2483           01101         CALL T_
+0385   2417           01102         CALL A_
+Warning[203]: Found opcode in column 1. (RETURN)
+0386   0008           01103 RETURN
+0387                  01104 MENSAJE
+0387   3001           01105         MOVLW B'00001'  
+0388   0087           01106         MOVWF PORTC
+0389   24DB           01107         CALL DELAY
+038A   24C2           01108         CALL EJECUTA
+038B   300C           01109         MOVLW B'01100'
+038C   0087           01110         MOVWF PORTC     
+038D   24DB           01111         CALL DELAY
+038E   24C2           01112         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+038F   0008           01113 RETURN
+0390                  01114 PASSWORD
+0390   24B9           01115         CALL P_
+0391   2417           01116         CALL A_
+0392   245F           01117         CALL S_
+0393   245F           01118         CALL S_
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 25
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0394   24B0           01119         CALL W_
+0395   2456           01120         CALL O_
+0396   2429           01121         CALL R_
+0397   244D           01122         CALL D_
+Warning[203]: Found opcode in column 1. (RETURN)
+0398   0008           01123 RETURN
+0399                  01124 HOLASET1
+0399   300A           01125         MOVLW B'01010' ;MENSAJE EN ***HOLA** COMANDO
+039A   0087           01126         MOVWF PORTC
+039B   24DB           01127         CALL DELAY
+039C   24C2           01128         CALL EJECUTA
+039D   3000           01129         MOVLW B'00000'
+039E   0087           01130         MOVWF PORTC
+039F   24DB           01131         CALL DELAY
+03A0   24C2           01132         CALL EJECUTA
+                      01133 ;PALABRA HOLA
+03A1   23E5           01134         CALL HOLA
+Warning[203]: Found opcode in column 1. (RETURN)
+03A2   0008           01135 RETURN
+                      01136 
+03A3                  01137 BIENVENIDOSET1
+03A3   300D           01138         MOVLW B'01101' ;MENSAJE EN ***HOLA** COMANDO
+03A4   0087           01139         MOVWF PORTC
+03A5   24DB           01140         CALL DELAY
+03A6   24C2           01141         CALL EJECUTA
+03A7   300D           01142         MOVLW B'01101'
+03A8   0087           01143         MOVWF PORTC
+03A9   24DB           01144         CALL DELAY
+03AA   24C2           01145         CALL EJECUTA
+                      01146 ;PALABRA HOLA
+03AB   23D9           01147         CALL BIENVENIDO 
+Warning[203]: Found opcode in column 1. (RETURN)
+03AC   0008           01148 RETURN
+03AD                  01149 LINEAUNO
+03AD   3013           01150         MOVLW B'10011' ;1
+03AE   0087           01151         MOVWF PORTC
+03AF   24DB           01152         CALL DELAY
+03B0   24C2           01153         CALL EJECUTA
+03B1   3011           01154         MOVLW B'10001'  
+03B2   0087           01155         MOVWF PORTC
+03B3   24DB           01156         CALL DELAY
+03B4   24C2           01157         CALL EJECUTA
+03B5   3013           01158         MOVLW B'10011' ;>
+03B6   0087           01159         MOVWF PORTC
+03B7   24DB           01160         CALL DELAY
+03B8   24C2           01161         CALL EJECUTA
+03B9   301E           01162         MOVLW B'11110'  
+03BA   0087           01163         MOVWF PORTC
+03BB   24DB           01164         CALL DELAY
+03BC   24C2           01165         CALL EJECUTA
+03BD   2417           01166         CALL A_
+03BE   2420           01167         CALL B_
+03BF   2429           01168         CALL R_
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 26
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+03C0   2432           01169         CALL I_
+03C1   2429           01170         CALL R_
+Warning[203]: Found opcode in column 1. (RETURN)
+03C2   0008           01171 RETURN
+03C3                  01172 LINEADOS
+03C3   3013           01173         MOVLW B'10011' ;2
+03C4   0087           01174         MOVWF PORTC
+03C5   24DB           01175         CALL DELAY
+03C6   24C2           01176         CALL EJECUTA
+03C7   3012           01177         MOVLW B'10010'  
+03C8   0087           01178         MOVWF PORTC
+03C9   24DB           01179         CALL DELAY
+03CA   24C2           01180         CALL EJECUTA
+03CB   3013           01181         MOVLW B'10011' ;>
+03CC   0087           01182         MOVWF PORTC
+03CD   24DB           01183         CALL DELAY
+03CE   24C2           01184         CALL EJECUTA
+03CF   301E           01185         MOVLW B'11110'  
+03D0   0087           01186         MOVWF PORTC
+03D1   24DB           01187         CALL DELAY
+03D2   24C2           01188         CALL EJECUTA
+03D3   2417           01189         CALL A_
+03D4   244D           01190         CALL D_
+03D5   24A7           01191         CALL M_
+03D6   2432           01192         CALL I_
+03D7   2444           01193         CALL N_
+Warning[203]: Found opcode in column 1. (RETURN)
+03D8   0008           01194 RETURN
+                      01195 
+                      01196 
+03D9                  01197 BIENVENIDO
+03D9   2420           01198         CALL B_
+03DA   2432           01199         CALL I_
+03DB   243B           01200         CALL E_
+03DC   2444           01201         CALL N_
+03DD   248C           01202         CALL V_
+03DE   243B           01203         CALL E_
+03DF   2444           01204         CALL N_
+03E0   2432           01205         CALL I_
+03E1   244D           01206         CALL D_
+03E2   2456           01207         CALL O_
+03E3   1003           01208         BCF STATUS,0
+Warning[203]: Found opcode in column 1. (RETURN)
+03E4   0008           01209 RETURN
+03E5                  01210 HOLA
+03E5   2471           01211         CALL H_
+03E6   2456           01212         CALL O_
+03E7   2468           01213         CALL L_
+03E8   2417           01214         CALL A_
+03E9   1003           01215         BCF STATUS,0
+Warning[203]: Found opcode in column 1. (RETURN)
+03EA   0008           01216 RETURN
+03EB                  01217 INIT
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 27
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+03EB   24DB           01218         CALL DELAY
+03EC   24DB           01219         CALL DELAY
+03ED   1207           01220         BCF RS
+03EE   3003           01221         MOVLW B'0011' ;1
+03EF   0087           01222         MOVWF PORTC
+03F0   24DB           01223         CALL DELAY
+03F1   24C2           01224         CALL EJECUTA
+03F2   3003           01225         MOVLW B'0011'
+03F3   0087           01226         MOVWF PORTC
+03F4   24DB           01227         CALL DELAY
+03F5   24C2           01228         CALL EJECUTA
+03F6   3003           01229         MOVLW B'0011' ;2
+03F7   0087           01230         MOVWF PORTC
+03F8   24DB           01231         CALL DELAY
+03F9   24C2           01232         CALL EJECUTA
+03FA   3002           01233         MOVLW B'0010'
+03FB   0087           01234         MOVWF PORTC
+03FC   24DB           01235         CALL DELAY
+03FD   24C2           01236         CALL EJECUTA
+03FE   3002           01237         MOVLW B'0010' ;3
+03FF   0087           01238         MOVWF PORTC
+0400   24DB           01239         CALL DELAY
+0401   24C2           01240         CALL EJECUTA
+0402   3008           01241         MOVLW B'1000' 
+0403   0087           01242         MOVWF PORTC
+0404   24DB           01243         CALL DELAY
+0405   24C2           01244         CALL EJECUTA
+0406   3000           01245         MOVLW B'0000' ;4
+0407   0087           01246         MOVWF PORTC
+0408   24DB           01247         CALL DELAY
+0409   24C2           01248         CALL EJECUTA
+040A   300C           01249         MOVLW B'1100'
+040B   0087           01250         MOVWF PORTC
+040C   24DB           01251         CALL DELAY
+040D   24C2           01252         CALL EJECUTA
+040E   3000           01253         MOVLW B'0000' ; LIMPIA EL DISPLAY
+040F   0087           01254         MOVWF PORTC
+0410   24DB           01255         CALL DELAY
+0411   24C2           01256         CALL EJECUTA
+0412   3001           01257         MOVLW B'0001'
+0413   0087           01258         MOVWF PORTC
+0414   24DB           01259         CALL DELAY
+0415   24C2           01260         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+0416   0008           01261 RETURN
+0417                  01262 A_
+0417   3014           01263         MOVLW B'10100' ;A
+0418   0087           01264         MOVWF PORTC
+0419   24DB           01265         CALL DELAY
+041A   24C2           01266         CALL EJECUTA
+041B   3011           01267         MOVLW B'10001'  
+041C   0087           01268         MOVWF PORTC
+041D   24DB           01269         CALL DELAY
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 28
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+041E   24C2           01270         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+041F   0008           01271 RETURN
+0420                  01272 B_
+0420   3014           01273         MOVLW B'10100' ;B
+0421   0087           01274         MOVWF PORTC
+0422   24DB           01275         CALL DELAY
+0423   24C2           01276         CALL EJECUTA
+0424   3012           01277         MOVLW B'10010'  
+0425   0087           01278         MOVWF PORTC
+0426   24DB           01279         CALL DELAY
+0427   24C2           01280         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+0428   0008           01281 RETURN
+0429                  01282 R_
+0429   3015           01283         MOVLW B'10101' ;R
+042A   0087           01284         MOVWF PORTC
+042B   24DB           01285         CALL DELAY
+042C   24C2           01286         CALL EJECUTA
+042D   3012           01287         MOVLW B'10010'  
+042E   0087           01288         MOVWF PORTC
+042F   24DB           01289         CALL DELAY
+0430   24C2           01290         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+0431   0008           01291 RETURN
+0432                  01292 I_
+0432   3014           01293         MOVLW B'10100' ;I
+0433   0087           01294         MOVWF PORTC
+0434   24DB           01295         CALL DELAY
+0435   24C2           01296         CALL EJECUTA
+0436   3019           01297         MOVLW B'11001'  
+0437   0087           01298         MOVWF PORTC
+0438   24DB           01299         CALL DELAY
+0439   24C2           01300         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+043A   0008           01301 RETURN
+043B                  01302 E_
+043B   3014           01303         MOVLW B'10100' ;E
+043C   0087           01304         MOVWF PORTC
+043D   24DB           01305         CALL DELAY
+043E   24C2           01306         CALL EJECUTA
+043F   3015           01307         MOVLW B'10101'  
+0440   0087           01308         MOVWF PORTC
+0441   24DB           01309         CALL DELAY
+0442   24C2           01310         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+0443   0008           01311 RETURN
+0444                  01312 N_
+0444   3014           01313         MOVLW B'10100' ;N
+0445   0087           01314         MOVWF PORTC
+0446   24DB           01315         CALL DELAY
+0447   24C2           01316         CALL EJECUTA
+0448   301E           01317         MOVLW B'11110'  
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 29
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0449   0087           01318         MOVWF PORTC
+044A   24DB           01319         CALL DELAY
+044B   24C2           01320         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+044C   0008           01321 RETURN
+044D   3014           01322 D_      MOVLW B'10100' ;D
+044E   0087           01323         MOVWF PORTC
+044F   24DB           01324         CALL DELAY
+0450   24C2           01325         CALL EJECUTA
+0451   3014           01326         MOVLW B'10100'  
+0452   0087           01327         MOVWF PORTC
+0453   24DB           01328         CALL DELAY
+0454   24C2           01329         CALL EJECUTA
+                      01330 
+Warning[203]: Found opcode in column 1. (RETURN)
+0455   0008           01331 RETURN
+0456                  01332 O_
+0456   3014           01333         MOVLW B'10100' ;O
+0457   0087           01334         MOVWF PORTC
+0458   24DB           01335         CALL DELAY
+0459   24C2           01336         CALL EJECUTA
+045A   301F           01337         MOVLW B'11111'  
+045B   0087           01338         MOVWF PORTC
+045C   24DB           01339         CALL DELAY
+045D   24C2           01340         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+045E   0008           01341 RETURN
+045F                  01342 S_
+045F   3015           01343         MOVLW B'10101' ;S
+0460   0087           01344         MOVWF PORTC
+0461   24DB           01345         CALL DELAY
+0462   24C2           01346         CALL EJECUTA
+0463   3013           01347         MOVLW B'10011'  
+0464   0087           01348         MOVWF PORTC
+0465   24DB           01349         CALL DELAY
+0466   24C2           01350         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+0467   0008           01351 RETURN
+0468                  01352 L_
+0468   3014           01353         MOVLW B'10100' ;L
+0469   0087           01354         MOVWF PORTC
+046A   24DB           01355         CALL DELAY
+046B   24C2           01356         CALL EJECUTA
+046C   301C           01357         MOVLW B'11100'  
+046D   0087           01358         MOVWF PORTC
+046E   24DB           01359         CALL DELAY
+046F   24C2           01360         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+0470   0008           01361 RETURN
+0471                  01362 H_
+0471   3014           01363         MOVLW B'10100' ;H
+0472   0087           01364         MOVWF PORTC
+0473   24DB           01365         CALL DELAY
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 30
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0474   24C2           01366         CALL EJECUTA
+0475   3018           01367         MOVLW B'11000'  
+0476   0087           01368         MOVWF PORTC
+0477   24DB           01369         CALL DELAY
+0478   24C2           01370         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+0479   0008           01371 RETURN
+                      01372 
+047A                  01373 C_
+047A   3014           01374         MOVLW B'10100' ;C
+047B   0087           01375         MOVWF PORTC
+047C   24DB           01376         CALL DELAY
+047D   24C2           01377         CALL EJECUTA
+047E   3013           01378         MOVLW B'10011'  
+047F   0087           01379         MOVWF PORTC
+0480   24DB           01380         CALL DELAY
+0481   24C2           01381         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+0482   0008           01382 RETURN
+0483                  01383 T_
+0483   3015           01384         MOVLW B'10101' ;T
+0484   0087           01385         MOVWF PORTC
+0485   24DB           01386         CALL DELAY
+0486   24C2           01387         CALL EJECUTA
+0487   3014           01388         MOVLW B'10100'  
+0488   0087           01389         MOVWF PORTC
+0489   24DB           01390         CALL DELAY
+048A   24C2           01391         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+048B   0008           01392 RETURN
+048C                  01393 V_
+048C   3015           01394         MOVLW B'10101' ;V
+048D   0087           01395         MOVWF PORTC
+048E   24DB           01396         CALL DELAY
+048F   24C2           01397         CALL EJECUTA
+0490   3016           01398         MOVLW B'10110'  
+0491   0087           01399         MOVWF PORTC
+0492   24DB           01400         CALL DELAY
+0493   24C2           01401         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+0494   0008           01402 RETURN
+0495                  01403 U_
+0495   3015           01404         MOVLW B'10101' ;U
+0496   0087           01405         MOVWF PORTC
+0497   24DB           01406         CALL DELAY
+0498   24C2           01407         CALL EJECUTA
+0499   3015           01408         MOVLW B'10101'  
+049A   0087           01409         MOVWF PORTC
+049B   24DB           01410         CALL DELAY
+049C   24C2           01411         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+049D   0008           01412 RETURN
+049E                  01413 Ñ_
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 31
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+049E   301E           01414         MOVLW B'11110' ;Ñ
+049F   0087           01415         MOVWF PORTC
+04A0   24DB           01416         CALL DELAY
+04A1   24C2           01417         CALL EJECUTA
+04A2   301E           01418         MOVLW B'11110'  
+04A3   0087           01419         MOVWF PORTC
+04A4   24DB           01420         CALL DELAY
+04A5   24C2           01421         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+04A6   0008           01422 RETURN
+04A7                  01423 M_
+04A7   3014           01424         MOVLW B'10100' ;M
+04A8   0087           01425         MOVWF PORTC
+04A9   24DB           01426         CALL DELAY
+04AA   24C2           01427         CALL EJECUTA
+04AB   301D           01428         MOVLW B'11101'  
+04AC   0087           01429         MOVWF PORTC
+04AD   24DB           01430         CALL DELAY
+04AE   24C2           01431         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+04AF   0008           01432 RETURN
+04B0                  01433 W_
+04B0   3015           01434         MOVLW B'10101' ;W
+04B1   0087           01435         MOVWF PORTC
+04B2   24DB           01436         CALL DELAY
+04B3   24C2           01437         CALL EJECUTA
+04B4   3017           01438         MOVLW B'10111'  
+04B5   0087           01439         MOVWF PORTC
+04B6   24DB           01440         CALL DELAY
+04B7   24C2           01441         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+04B8   0008           01442 RETURN
+04B9                  01443 P_
+04B9   3015           01444         MOVLW B'10101' ;P
+04BA   0087           01445         MOVWF PORTC
+04BB   24DB           01446         CALL DELAY
+04BC   24C2           01447         CALL EJECUTA
+04BD   3010           01448         MOVLW B'10000'  
+04BE   0087           01449         MOVWF PORTC
+04BF   24DB           01450         CALL DELAY
+04C0   24C2           01451         CALL EJECUTA
+Warning[203]: Found opcode in column 1. (RETURN)
+04C1   0008           01452 RETURN
+                      01453 
+                      01454 
+                      01455 
+                      01456 
+04C2                  01457 EJECUTA
+04C2   1687           01458         BSF EN
+04C3   24DB           01459         CALL DELAY
+04C4   1287           01460         BCF EN
+04C5   24DB           01461         CALL DELAY
+04C6   0187           01462         CLRF PORTC
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 32
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[203]: Found opcode in column 1. (RETURN)
+04C7   0008           01463 RETURN
+04C8                  01464 LIMPIEZA
+                      01465         ;LIMPIO TOTALMENTE EL LCD
+04C8   0187           01466         CLRF PORTC
+04C9   0186           01467         CLRF PORTB
+04CA   3000           01468         MOVLW B'00000'
+04CB   0087           01469         MOVWF PORTC
+04CC   24C2           01470         CALL EJECUTA
+04CD   24DB           01471         CALL DELAY
+04CE   3001           01472         MOVLW B'00001'
+04CF   0087           01473         MOVWF PORTC
+04D0   24C2           01474         CALL EJECUTA
+04D1   24DB           01475         CALL DELAY
+04D2   3000           01476         MOVLW B'00000'
+04D3   0087           01477         MOVWF PORTC
+04D4   24C2           01478         CALL EJECUTA
+04D5   24DB           01479         CALL DELAY
+04D6   3002           01480         MOVLW B'00010'
+04D7   0087           01481         MOVWF PORTC
+04D8   24C2           01482         CALL EJECUTA
+04D9   24DB           01483         CALL DELAY
+                      01484         ;FIN DE LA LIMPIEZA
+Warning[203]: Found opcode in column 1. (RETURN)
+04DA   0008           01485 RETURN
+                      01486 ;RETARDO PRINCIPAL
+04DB                  01487 DELAY
+04DB   30FC           01488         MOVLW TMR_CARGA
+04DC   0081           01489         MOVWF TMR0
+04DD   110B           01490         BCF INTCON,T0IF
+04DE                  01491 TIMER_DESBORDE
+04DE   1D0B           01492         BTFSS INTCON,T0IF
+04DF   2CDE           01493         GOTO TIMER_DESBORDE
+04E0   0008           01494         RETURN
+                      01495 
+                      01496 
+                      01497 ;retardo por ciclos
+04E1                  01498 TIEMPO
+04E1   3002           01499         MOVLW .2        
+04E2   00A3           01500         MOVWF 0x23
+04E3                  01501 TRES
+04E3   3064           01502         MOVLW .100
+04E4   00A4           01503         MOVWF 0X24
+04E5                  01504 DOS
+04E5   30F9           01505         MOVLW .249
+04E6   00A5           01506         MOVWF 0X25
+04E7                  01507 UNO
+04E7   0000           01508         NOP
+Message[305]: Using default destination of 1 (file).
+04E8   0BA5           01509         DECFSZ 0X25
+04E9   2CE7           01510         GOTO UNO
+Message[305]: Using default destination of 1 (file).
+04EA   0BA4           01511         DECFSZ 0X24
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 33
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+04EB   2CE5           01512         GOTO DOS
+Message[305]: Using default destination of 1 (file).
+04EC   0BA3           01513         DECFSZ 0X23
+04ED   2CE3           01514         GOTO TRES
+Warning[203]: Found opcode in column 1. (RETURN)
+04EE   0008           01515 RETURN
+                      01516 
+                      01517 
+Warning[205]: Found directive in column 1. (END)
+                      01518 END
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 34
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ABRIENDO                          0000035B
+ABRIR                             00000053
+ABRIROADMIN                       00000064
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADCS2                             00000006
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+A_                                00000417
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BIENVENIDO                        000003D9
+BIENVENIDOSET1                    000003A3
+BRGH                              00000002
+B_                                00000420
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CAMBIARCONTRA                     0000015F
+CAMBIARESTADO                     00000212
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 35
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CE                                00000214
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CIS                               00000003
+CKE                               00000006
+CKP                               00000004
+CLAVE                             00000376
+CLAVECORRECTA                     0000036D
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000009C
+CMIE                              00000006
+CMIF                              00000006
+COMPARADORLIMITE                  0000005E
+CONFIRMA                          000000ED
+CONTADOR                          0000005C
+CONTADORLIMITE                    0000005D
+CONTINUAR                         00000031
+CONTRAINCORRECTA                  000000F2
+CONTRASEÑA                        00000049
+CORRECTA                          00000121
+CREN                              00000004
+CSRC                              00000007
+CUENTADIGITOS                     000000E6
+CURSOROFF                         00000151
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            0000009D
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+C_                                0000047A
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+DELAY                             000004DB
+DIG0                              00000059
+DIG1                              00000050
+DIG1TEST                          00000060
+DIG2                              00000051
+DIG2TEST                          00000061
+DIG3                              00000052
+DIG3TEST                          00000062
+DIG4                              00000053
+DIG4TEST                          00000063
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 36
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+DIG5                              00000054
+DIG6                              00000055
+DIG7                              00000056
+DIG8                              00000057
+DIG9                              00000058
+DIGGATO                           0000005A
+DOS                               000004E5
+DOS_SET                           00000046
+D_                                0000044D
+D_A                               00000005
+D_NOT_A                           00000005
+E1                                000001B0
+E2                                000001C9
+E3                                000001E2
+E4                                000001FB
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+EJECUTA                           000004C2
+EN                                PORTC,5
+ENTRA                             00000022
+ESCRIBE1                          000001AE
+ESCRIBE2                          000001C7
+ESCRIBE3                          000001E0
+ESCRIBE4                          000001F9
+EXTRAE                            00000114
+E_                                0000043B
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+HOLA                              000003E5
+HOLASET1                          00000399
+H_                                00000471
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+IDENTIFICADOR                     00000065
+INCORRECTA                        0000037C
+INDF                              00000000
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 37
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+INICIO                            0000001D
+INIT                              000003EB
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+I_                                00000432
+LEEDIG1TEST                       000000B6
+LEEDIG2TEST                       000000C2
+LEEDIG3TEST                       000000CE
+LEEDIG4TEST                       000000DA
+LIMPIADIGITOS                     00000146
+LIMPIEZA                          000004C8
+LINEADOS                          000003C3
+LINEAUNO                          000003AD
+L_                                00000468
+MENSAJE                           00000387
+MENU                              0000015A
+MODOPASSWORD                      0000005F
+M_                                000004A7
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+NUEVACONTRASEÑA                   00000343
+NUMAST                            0000030F
+NUMCERO                           00000321
+NUMCINCO                          000002AB
+NUMCUATRO                         00000297
+NUMDOS                            0000026D
+NUMGATO                           00000336
+NUMNUEVE                          000002FB
+NUMOCHO                           000002E7
+NUMSEIS                           000002BF
+NUMSIETE                          000002D3
+NUMTRES                           00000283
+NUMUNO                            00000256
+N_                                00000444
+OBF                               00000006
+OERR                              00000001
+OPTION_REG                        00000081
+O_                                00000456
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 38
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+P                                 00000004
+PASSWORD                          00000390
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PREGUNTA1                         0000023A
+PREGUNTA2                         00000241
+PREGUNTA3                         00000248
+PREGUNTA4                         0000024F
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+PUNTO                             00000364
+P_                                000004B9
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 39
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+READ_WRITE                        00000002
+REINICIO                          00000009
+ROTACION                          0000002E
+RP0                               00000005
+RP1                               00000006
+RS                                PORTC,4
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_                                00000429
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SEGURO                            0000001F
+SEN                               00000000
+SETD1                             00000182
+SETD2                             0000018D
+SETD3                             00000198
+SETD4                             000001A3
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 40
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATE                             00000066
+STATUS                            00000003
+SUBAST                            00000317
+SYNC                              00000004
+S_                                0000045F
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TECLADO                           00000229
+TESTD1                            0000007E
+TESTD2                            0000008B
+TESTD3                            00000098
+TESTD4                            000000A5
+TIEMPO                            000004E1
+TIMER_DESBORDE                    000004DE
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TMR_CARGA                         000000FC
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 41
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRES                              000004E3
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+T_                                00000483
+UA                                00000001
+UNO                               000004E7
+UNO_SET                           00000045
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 42
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+U_                                00000495
+V_                                0000048C
+W                                 00000000
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+W_                                000004B0
+Z                                 00000002
+_AST                              00000312
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CERO                             0000032C
+_CINCO                            000002B5
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00001FFF
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_CUATRO                           000002A1
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_DOS                              00000279
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_NUEVE                            00000305
+_OCHO                             000002F1
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_SEIS                             000002C9
+_SIETE                            000002DD
+_TRES                             0000028D
+_UNO                              00000263
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+MPASM  5.51                           LCD.ASM   12-30-2020  21:12:15         PAGE 43
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FFD
+__16F877A                         00000001
+Ñ_                                0000049E
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0080 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+00C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0100 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0140 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0180 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+01C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0200 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0240 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0280 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+02C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0300 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0340 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0380 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+03C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0400 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0440 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0480 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+04C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXX- ----------------
+2000 : -------X-------- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:  1263
+Program Memory Words Free:  6929
+
+
+Errors   :     0
+Warnings :   107 reported,     0 suppressed
+Messages :    72 reported,     0 suppressed
+
+

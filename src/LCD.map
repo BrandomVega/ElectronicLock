@@ -1,0 +1,252 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Wed Dec 30 21:12:18 2020
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x0009de
+       .config_2007_LCD.O       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x0004ee      
+                            0x002007    0x002007      
+            1264 out of 8454 program addresses used, program memory utilization is 14%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                 ABRIENDO   0x00035b    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    ABRIR   0x000053    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       A_   0x000417    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+               BIENVENIDO   0x0003d9    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+           BIENVENIDOSET1   0x0003a3    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       B_   0x000420    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+            CAMBIARCONTRA   0x00015f    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+            CAMBIARESTADO   0x000212    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       CE   0x000214    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    CLAVE   0x000376    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+            CLAVECORRECTA   0x00036d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 CONFIRMA   0x0000ed    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                CONTINUAR   0x000031    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+         CONTRAINCORRECTA   0x0000f2    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+               CONTRASEÑA   0x000049    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 CORRECTA   0x000121    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+            CUENTADIGITOS   0x0000e6    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                CURSOROFF   0x000151    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       C_   0x00047a    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    DELAY   0x0004db    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                      DOS   0x0004e5    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       D_   0x00044d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       E1   0x0001b0    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       E2   0x0001c9    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       E3   0x0001e2    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       E4   0x0001fb    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  EJECUTA   0x0004c2    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    ENTRA   0x000022    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 ESCRIBE1   0x0001ae    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 ESCRIBE2   0x0001c7    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 ESCRIBE3   0x0001e0    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 ESCRIBE4   0x0001f9    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   EXTRAE   0x000114    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       E_   0x00043b    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     HOLA   0x0003e5    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 HOLASET1   0x000399    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       H_   0x000471    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+               INCORRECTA   0x00037c    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   INICIO   0x00001d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     INIT   0x0003eb    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       I_   0x000432    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+              LEEDIG1TEST   0x0000b6    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+              LEEDIG2TEST   0x0000c2    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+              LEEDIG3TEST   0x0000ce    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+              LEEDIG4TEST   0x0000da    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+            LIMPIADIGITOS   0x000146    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 LIMPIEZA   0x0004c8    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 LINEADOS   0x0003c3    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 LINEAUNO   0x0003ad    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       L_   0x000468    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  MENSAJE   0x000387    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     MENU   0x00015a    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       M_   0x0004a7    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+          NUEVACONTRASEÑA   0x000343    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   NUMAST   0x00030f    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  NUMCERO   0x000321    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 NUMCINCO   0x0002ab    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                NUMCUATRO   0x000297    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   NUMDOS   0x00026d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  NUMGATO   0x000336    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 NUMNUEVE   0x0002fb    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  NUMOCHO   0x0002e7    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  NUMSEIS   0x0002bf    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 NUMSIETE   0x0002d3    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  NUMTRES   0x000283    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   NUMUNO   0x000256    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       N_   0x000444    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       O_   0x000456    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 PASSWORD   0x000390    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                PREGUNTA1   0x00023a    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                PREGUNTA2   0x000241    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                PREGUNTA3   0x000248    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                PREGUNTA4   0x00024f    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    PUNTO   0x000364    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       P_   0x0004b9    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 REINICIO   0x000009    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 ROTACION   0x00002e    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       R_   0x000429    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   SEGURO   0x00001f    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    SETD1   0x000182    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    SETD2   0x00018d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    SETD3   0x000198    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    SETD4   0x0001a3    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   SUBAST   0x000317    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       S_   0x00045f    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  TECLADO   0x000229    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   TESTD1   0x00007e    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   TESTD2   0x00008b    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   TESTD3   0x000098    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   TESTD4   0x0000a5    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   TIEMPO   0x0004e1    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+           TIMER_DESBORDE   0x0004de    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     TRES   0x0004e3    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       T_   0x000483    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                      UNO   0x0004e7    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       U_   0x000495    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       V_   0x00048c    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       W_   0x0004b0    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     _AST   0x000312    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    _CERO   0x00032c    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   _CINCO   0x0002b5    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  _CUATRO   0x0002a1    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     _DOS   0x000279    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   _NUEVE   0x000305    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    _OCHO   0x0002f1    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    _SEIS   0x0002c9    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   _SIETE   0x0002dd    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    _TRES   0x00028d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     _UNO   0x000263    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       Ñ_   0x00049e    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                 REINICIO   0x000009    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   INICIO   0x00001d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   SEGURO   0x00001f    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    ENTRA   0x000022    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 ROTACION   0x00002e    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                CONTINUAR   0x000031    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+               CONTRASEÑA   0x000049    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    ABRIR   0x000053    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   TESTD1   0x00007e    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   TESTD2   0x00008b    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   TESTD3   0x000098    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   TESTD4   0x0000a5    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+              LEEDIG1TEST   0x0000b6    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+              LEEDIG2TEST   0x0000c2    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+              LEEDIG3TEST   0x0000ce    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+              LEEDIG4TEST   0x0000da    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+            CUENTADIGITOS   0x0000e6    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 CONFIRMA   0x0000ed    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+         CONTRAINCORRECTA   0x0000f2    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   EXTRAE   0x000114    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 CORRECTA   0x000121    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+            LIMPIADIGITOS   0x000146    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                CURSOROFF   0x000151    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     MENU   0x00015a    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+            CAMBIARCONTRA   0x00015f    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    SETD1   0x000182    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    SETD2   0x00018d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    SETD3   0x000198    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    SETD4   0x0001a3    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 ESCRIBE1   0x0001ae    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       E1   0x0001b0    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 ESCRIBE2   0x0001c7    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       E2   0x0001c9    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 ESCRIBE3   0x0001e0    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       E3   0x0001e2    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 ESCRIBE4   0x0001f9    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       E4   0x0001fb    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+            CAMBIARESTADO   0x000212    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       CE   0x000214    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  TECLADO   0x000229    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                PREGUNTA1   0x00023a    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                PREGUNTA2   0x000241    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                PREGUNTA3   0x000248    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                PREGUNTA4   0x00024f    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   NUMUNO   0x000256    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     _UNO   0x000263    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   NUMDOS   0x00026d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     _DOS   0x000279    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  NUMTRES   0x000283    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    _TRES   0x00028d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                NUMCUATRO   0x000297    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  _CUATRO   0x0002a1    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 NUMCINCO   0x0002ab    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   _CINCO   0x0002b5    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  NUMSEIS   0x0002bf    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    _SEIS   0x0002c9    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 NUMSIETE   0x0002d3    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   _SIETE   0x0002dd    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  NUMOCHO   0x0002e7    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    _OCHO   0x0002f1    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 NUMNUEVE   0x0002fb    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   _NUEVE   0x000305    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   NUMAST   0x00030f    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     _AST   0x000312    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   SUBAST   0x000317    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  NUMCERO   0x000321    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    _CERO   0x00032c    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  NUMGATO   0x000336    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+          NUEVACONTRASEÑA   0x000343    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 ABRIENDO   0x00035b    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    PUNTO   0x000364    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+            CLAVECORRECTA   0x00036d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    CLAVE   0x000376    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+               INCORRECTA   0x00037c    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  MENSAJE   0x000387    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 PASSWORD   0x000390    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 HOLASET1   0x000399    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+           BIENVENIDOSET1   0x0003a3    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 LINEAUNO   0x0003ad    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 LINEADOS   0x0003c3    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+               BIENVENIDO   0x0003d9    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     HOLA   0x0003e5    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     INIT   0x0003eb    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       A_   0x000417    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       B_   0x000420    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       R_   0x000429    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       I_   0x000432    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       E_   0x00043b    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       N_   0x000444    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       D_   0x00044d    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       O_   0x000456    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       S_   0x00045f    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       L_   0x000468    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       H_   0x000471    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       C_   0x00047a    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       T_   0x000483    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       V_   0x00048c    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       U_   0x000495    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       Ñ_   0x00049e    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       M_   0x0004a7    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       W_   0x0004b0    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                       P_   0x0004b9    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                  EJECUTA   0x0004c2    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                 LIMPIEZA   0x0004c8    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                    DELAY   0x0004db    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+           TIMER_DESBORDE   0x0004de    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                   TIEMPO   0x0004e1    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                     TRES   0x0004e3    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                      DOS   0x0004e5    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+                      UNO   0x0004e7    program     static E:\!Quinto Semestre\Arquitectura de MC y MU\SUBRUTINAS\LCD.asm
+
+
